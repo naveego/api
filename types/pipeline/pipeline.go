@@ -1,4 +1,4 @@
-package types
+package pipeline
 
 const (
 
@@ -19,15 +19,15 @@ type PipelineStatus string
 // in Naveego pipeline.  It controls the flow of data from one activity
 // to another.
 type Pipeline struct {
-	ID          string              `json:"id"`                    // The ID of the pipeline
-	Name        string              `json:"name"`                  // The Name of the pipeline
-	Description string              `json:"description,omitempty"` // The description of the piepline
-	Status      PipelineStatus      `json:"status"`                // The Status of the pipeline
-	Publisher   PipelinePublisher   `json:"publisher"`             // The Publisher for the pipeline
-	Subscriber  PipelineSubscriber  `json:"subscriber"`            // The Subscriber for the pipeline
-	Activities  []ActivityReference `json:"activities"`            // The activities in the pipeline
-	CreatedOn   string              `json:"created_on,omitempty"`  // The date the pipeline was created on
-	ModifiedOn  string              `json:"modified_on,omitempty"` // The date the pipeline was modified
+	ID          string             `json:"id"`                    // The ID of the pipeline
+	Name        string             `json:"name"`                  // The Name of the pipeline
+	Description string             `json:"description,omitempty"` // The description of the piepline
+	Status      PipelineStatus     `json:"status"`                // The Status of the pipeline
+	Publisher   PipelinePublisher  `json:"publisher"`             // The Publisher for the pipeline
+	Subscriber  PipelineSubscriber `json:"subscriber"`            // The Subscriber for the pipeline
+	Activities  []Activity         `json:"activities"`            // The activities in the pipeline
+	CreatedOn   string             `json:"created_on,omitempty"`  // The date the pipeline was created on
+	ModifiedOn  string             `json:"modified_on,omitempty"` // The date the pipeline was modified
 }
 
 type PipelinePublisher struct {

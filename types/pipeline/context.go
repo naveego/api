@@ -1,4 +1,4 @@
-package types
+package pipeline
 
 type Context interface {
 }

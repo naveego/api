@@ -1,4 +1,4 @@
-package types
+package pipeline
 
 type Stream struct {
 	ID   string `json:"id"`   // The ID of the stream

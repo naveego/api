@@ -1,4 +1,4 @@
-package types
+package pipeline
 
 type SubscriberType struct {
 	ID          string `json:"id"`                    // The ID

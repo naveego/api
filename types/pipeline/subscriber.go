@@ -1,4 +1,4 @@
-package types
+package pipeline
 
 // Subscriber represents an invocable subscriber in the pipeline
 type Subscriber struct {

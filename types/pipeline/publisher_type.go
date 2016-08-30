@@ -1,4 +1,4 @@
-package types
+package pipeline
 
 type PublisherType struct {
 	ID          string `json:"id"`                    // The ID

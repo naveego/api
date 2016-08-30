@@ -1,4 +1,4 @@
-package types
+package pipeline
 
 // Publisher represents an invocable publisher in the pipeline
 type Publisher struct {
