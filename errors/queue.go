@@ -2,5 +2,6 @@ package errors
 
 // Queue Errors Start at 1000
 var (
-	QueueNotFound = 4041000
+	QueueGeneralError = 5001000
+	QueueNotFound     = 4041001
 )
