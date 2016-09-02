@@ -19,3 +19,21 @@ func (p Principal) IsInRole(role string) bool {
 	}
 	return false
 }
+
+// IsValid returns whether or not the principal has all required
+// information for validation
+func (p Principal) IsValid() bool {
+	if p.ID == "" {
+		return false
+	}
+
+	if p.Name == "" {
+		return false
+	}
+
+	if p.Repository == "" {
+		return false
+	}
+
+	return true
+}
