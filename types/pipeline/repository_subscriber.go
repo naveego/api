@@ -1,7 +1,7 @@
 package pipeline
 
-// Subscriber represents an invocable subscriber in the pipeline
-type Subscriber struct {
+// RepositorySubscriber represents an invocable subscriber that is defined inside a specific repository
+type RepositorySubscriber struct {
 	ID          string                 `json:"id"`          // The ID of the Subscriber
 	Name        string                 `json:"name"`        // The Name of the Subscriber
 	Description string                 `json:"description"` // The Description of the Subscriber

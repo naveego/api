@@ -1,7 +1,7 @@
 package pipeline
 
-// Publisher represents an invocable publisher in the pipeline
-type Publisher struct {
+// RepositoryPublisher represents an publisher that is configured for a given repository
+type RepositoryPublisher struct {
 	ID          string                 `json:"id"`          // The ID of the Publisher
 	Name        string                 `json:"name"`        // The Name of the Publisher
 	SafeName    string                 `json:"safe_name"`   // The Safe name of the publisehr
