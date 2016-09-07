@@ -20,7 +20,7 @@ type Package struct {
 // NewPublisherPackage creates a package for building a publisher
 func NewPublisherPackage(typeName, typeImport string) Package {
 	return Package{
-		CommandImport: "github.com/naveego/pipeline-api/cli/pub",
+		CommandImport: "github.com/naveego/api/pipeline/cli/pub",
 		TypeName:      typeName,
 		TypeImport:    typeImport,
 	}
@@ -29,7 +29,7 @@ func NewPublisherPackage(typeName, typeImport string) Package {
 // NewSubscriberPackage creates a package for building a subscriber
 func NewSubscriberPackage(typeName, typeImport string) Package {
 	return Package{
-		CommandImport: "github.com/naveego/pipeline-api/cli/sub",
+		CommandImport: "github.com/naveego/api/pipeline/cli/sub",
 		TypeName:      typeName,
 		TypeImport:    typeImport,
 	}

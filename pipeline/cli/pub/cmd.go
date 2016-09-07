@@ -6,6 +6,7 @@ import (
 
 	"github.com/Sirupsen/logrus"
 	"github.com/naveego/api/pipeline/client"
+	"github.com/naveego/api/types/pipeline"
 	"github.com/spf13/cobra"
 )
 
@@ -15,11 +16,11 @@ var (
 	// TypeName holds the name of the connector being used in this package
 	TypeName = "none"
 
-	targetURL  string
-	repository string
-	apiClient  *client.Client
-	apitoken   string
-	log        *logrus.Entry
+	targetURL         string
+	apiClient         *client.Client
+	apitoken          string
+	log               *logrus.Entry
+	publisherInstance pipeline.PublisherInstance
 )
 
 var RootCmd = &cobra.Command{
@@ -44,13 +45,20 @@ var RootCmd = &cobra.Command{
 			return err
 		}
 
+		publisherID := args[0]
+		publisherInstance, err = apiClient.GetPublisherInstance(publisherID)
+		if err != nil {
+			return err
+		}
+
+		log = logrus.WithField("publisher_id", publisherID)
 		return nil
 	},
 }
 
 func init() {
 	RootCmd.SilenceUsage = true
-	RootCmd.PersistentFlags().StringVarP(&targetURL, "url", "u", "", "The url for the pipeline api")
+	RootCmd.PersistentFlags().StringVarP(&targetURL, "api", "a", "", "The url for the pipeline api")
 	RootCmd.PersistentFlags().StringVarP(&apitoken, "token", "t", "", "The API token to use for authentication")
 }
 
@@ -67,4 +75,5 @@ func Execute() error {
 func addCommands() {
 	RootCmd.AddCommand(shapesCmd)
 	RootCmd.AddCommand(publishCmd)
+	RootCmd.AddCommand(runCmd)
 }

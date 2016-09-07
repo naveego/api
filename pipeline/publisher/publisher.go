@@ -67,9 +67,9 @@ func unregisterAllFactories() {
 type Factory func() Publisher
 
 type Context struct {
-	PublisherRef pipeline.RepositoryPublisher // Reference to the publisher data from the expectedPublisher
-	APIToken     string                       // The API token to use for authentication
-	Logger       *logrus.Entry
+	PublisherInstance pipeline.PublisherInstance // Reference to the publisher data from the expectedPublisher
+	APIToken          string                     // The API token to use for authentication
+	Logger            *logrus.Entry
 }
 
 // Publisher provides the core API for publishing data to the pipeline.

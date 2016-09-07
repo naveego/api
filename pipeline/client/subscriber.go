@@ -7,8 +7,8 @@ import (
 	"github.com/naveego/api/types/pipeline"
 )
 
-func (cli *Client) GetSubscriber(subscriberID string) (pipeline.RepositorySubscriber, error) {
-	var subscriber pipeline.RepositorySubscriber
+func (cli *Client) GetSubscriber(subscriberID string) (pipeline.SubscriberInstance, error) {
+	var subscriber pipeline.SubscriberInstance
 
 	resourceURL := fmt.Sprintf("/subscriber/%s", subscriberID)
 

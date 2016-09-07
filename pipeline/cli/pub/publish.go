@@ -1,33 +1,14 @@
 package pub
 
 import (
-	"github.com/Sirupsen/logrus"
 	"github.com/naveego/api/pipeline/publisher"
-	"github.com/naveego/api/types/pipeline"
 	"github.com/spf13/cobra"
 )
 
-var (
-	publisherID  string
-	publisherRef pipeline.RepositoryPublisher
-)
-
 var publishCmd = &cobra.Command{
-	Use:     "publish",
-	Short:   "Publishes data to the Naveego pipeline API",
-	PreRunE: runPrePublish,
-	RunE:    runPublish,
-}
-
-func init() {
-	publishCmd.PersistentFlags().StringVarP(&publisherID, "publisherid", "p", "", "The url for the pipeline api")
-}
-
-func runPrePublish(cmd *cobra.Command, args []string) error {
-	var err error
-	publisherRef, err = apiClient.GetPublisher(publisherID)
-	log = logrus.WithField("repository", publisherRef.Repository)
-	return err
+	Use:   "publish",
+	Short: "Publishes data to the Naveego pipeline API",
+	RunE:  runPublish,
 }
 
 func runPublish(cmd *cobra.Command, args []string) error {
@@ -37,9 +18,10 @@ func runPublish(cmd *cobra.Command, args []string) error {
 	}
 
 	ctx := publisher.Context{
-		Logger:       log,
-		PublisherRef: publisherRef,
+		Logger:            log,
+		PublisherInstance: publisherInstance,
 	}
+
 	transport := publisher.NewDataTransport(targetURL, apitoken, log)
 	p := pubFactory()
 	p.Publish(ctx, transport)

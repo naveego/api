@@ -7,8 +7,8 @@ import (
 	"github.com/naveego/api/types/pipeline"
 )
 
-func (cli *Client) GetPublisher(publisherId string) (pipeline.RepositoryPublisher, error) {
-	var publisher pipeline.RepositoryPublisher
+func (cli *Client) GetPublisherInstance(publisherId string) (pipeline.PublisherInstance, error) {
+	var publisher pipeline.PublisherInstance
 
 	publisherURL := fmt.Sprintf("/publisher/%s", publisherId)
 
