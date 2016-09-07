@@ -7,7 +7,7 @@ import (
 	"os"
 	"os/signal"
 
-	"github.com/naveego/live-api"
+	"github.com/naveego/api/live-api"
 	"github.com/Sirupsen/logrus"
 )
 
