@@ -10,7 +10,7 @@ import (
 func (cli *Client) GetPublisherInstance(publisherId string) (pipeline.PublisherInstance, error) {
 	var publisher pipeline.PublisherInstance
 
-	publisherURL := fmt.Sprintf("/publisher/%s", publisherId)
+	publisherURL := fmt.Sprintf("/publisherinstances/%s", publisherId)
 
 	resp, err := cli.sendRequest("GET", publisherURL, nil, nil)
 	if err != nil {
