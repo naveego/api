@@ -67,8 +67,8 @@ func unregisterAllFactories() {
 type Factory func() Subscriber
 
 type Context struct {
-	Subscriber pipeline.RepositorySubscriber // Reference to the subscriber for this operation
-	APIToken   string                        // The Token to use for API calls
+	Subscriber pipeline.SubscriberInstance // Reference to the subscriber for this operation
+	APIToken   string                      // The Token to use for API calls
 	Logger     *logrus.Entry
 }
 

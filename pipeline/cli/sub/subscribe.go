@@ -10,7 +10,7 @@ import (
 var (
 	readerAddr    string
 	subscriberID  string
-	subscriberRef pipeline.RepositorySubscriber
+	subscriberRef pipeline.SubscriberInstance
 )
 
 func init() {
@@ -19,14 +19,18 @@ func init() {
 }
 
 var subscribeCmd = &cobra.Command{
-	Use:   "subscribe",
-	Short: "Subscribes to the data from the Naveego Pipeline API",
-	RunE:  runSubscribe,
+	Use:     "subscribe",
+	Short:   "Subscribes to the data from the Naveego Pipeline API",
+	PreRunE: runPreSubscribe,
+	RunE:    runSubscribe,
 }
 
 func runPreSubscribe(cmd *cobra.Command, args []string) error {
 	var err error
 	subscriberRef, err = apiClient.GetSubscriber(subscriberID)
+	if err != nil {
+		logrus.Warn("Error Fetching Subscriber From API: ", err)
+	}
 	log = logrus.WithField("repository", subscriberRef.Repository)
 	return err
 }
@@ -38,12 +42,21 @@ func runSubscribe(cmd *cobra.Command, args []string) error {
 	}
 
 	s := subFactory()
-	ctx := subscriber.Context{}
+	ctx := subscriber.Context{
+		Logger:     log,
+		Subscriber: subscriberRef,
+	}
 	if initer, ok := s.(subscriber.Initer); ok {
+		log.Debug("Initializing Subscriber")
+		log.Debugf("Subscriber Settings: %v", subscriberRef.Settings)
 		initer.Init(ctx)
 	}
 
-	streamReader, err := subscriber.NewStreamReader(readerAddr, ctx.Subscriber.InputStream)
+	ctx.Logger = log
+
+	log.Debugf("Setting Up Stream Reader: %s %s", readerAddr, "pipe-test-WellAttribute")
+
+	streamReader, err := subscriber.NewStreamReader(readerAddr, "pipe-test-WellAttribute")
 	if err != nil {
 		return err
 	}
