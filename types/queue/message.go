@@ -3,7 +3,7 @@ package queue
 import "time"
 
 type Message struct {
-	ID         string                 `json:"id" bson:"_id"`      // The Messages ID
+	ID         int64                  `json:"id" bson:"_id"`      // The Messages ID
 	Queue      string                 `json:"queue" bson:"queue"` // The Queue ID for the message
 	Data       map[string]interface{} `json:"data" bson:"data"`   // The data for the Message
 	Date       time.Time              `json:"-" bson:"date"`      // The date the message was queued
