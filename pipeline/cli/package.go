@@ -58,7 +58,7 @@ func BuildPackage(pkg Package) (string, string, error) {
 
 	c := NewCommand(dir, "go", "build", "main.go").Execute()
 
-	tmpPkg := filepath.Join(dir, "main.exe")
+	tmpPkg := filepath.Join(dir, "main")
 
 	// Not using os.rename due to issue if the temp Directory
 	// is on a different disk than the output
@@ -68,7 +68,7 @@ func BuildPackage(pkg Package) (string, string, error) {
 	}
 	defer in.Close()
 
-	out, err := os.Create("main.exe")
+	out, err := os.Create("main")
 	if err != nil {
 		return "", c.Output, err
 	}

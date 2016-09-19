@@ -30,11 +30,11 @@ func runRun(cmd *cobra.Command, args []string) error {
 	host, _ := os.Hostname()
 	var liveCli *live.Client
 
-	if strings.HasPrefix(publisherInstance.LiveURL, "tcp://") {
-		tcpURL := publisherInstance.LiveURL[6:]
+	if strings.HasPrefix(publisherInstance.LiveEndpoint, "tcp://") {
+		tcpURL := publisherInstance.LiveEndpoint[6:]
 		liveCli, err = live.NewTCPClient(tcpURL, publisherInstance.ID, host)
-	} else if strings.HasPrefix(publisherInstance.LiveURL, "ws://") || strings.HasPrefix(publisherInstance.LiveURL, "wss://") {
-		liveCli, err = live.NewWebSocketClient(publisherInstance.LiveURL, publisherInstance.ID, host)
+	} else if strings.HasPrefix(publisherInstance.LiveEndpoint, "ws://") || strings.HasPrefix(publisherInstance.LiveEndpoint, "wss://") {
+		liveCli, err = live.NewWebSocketClient(publisherInstance.LiveEndpoint, publisherInstance.ID, host)
 	}
 	if err != nil {
 		return err
@@ -51,7 +51,7 @@ func runRun(cmd *cobra.Command, args []string) error {
 			PublisherInstance: publisherInstance,
 		}
 
-		transport := publisher.NewDataTransport(targetURL, apitoken, log)
+		transport := publisher.NewDataTransport(publisherInstance.PublishEndpoint, apitoken, log)
 		p := pubFactory()
 		p.Publish(ctx, transport)
 
