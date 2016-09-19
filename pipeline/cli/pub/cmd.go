@@ -16,7 +16,7 @@ var (
 	// TypeName holds the name of the connector being used in this package
 	TypeName = "none"
 
-	targetURL         string
+	apiURL            string
 	apiClient         *client.Client
 	apitoken          string
 	verbose           bool
@@ -40,10 +40,10 @@ var RootCmd = &cobra.Command{
 			"Authorization": bearerStr,
 		}
 
-		targetURL = strings.TrimSpace(targetURL)
+		apiURL = strings.TrimSpace(apiURL)
 
 		var err error
-		apiClient, err = client.NewClient(targetURL, apiClientVersion, apiClientHeaders)
+		apiClient, err = client.NewClient(apiURL, apiClientVersion, apiClientHeaders)
 		if err != nil {
 			return err
 		}
@@ -61,7 +61,7 @@ var RootCmd = &cobra.Command{
 
 func init() {
 	RootCmd.SilenceUsage = true
-	RootCmd.PersistentFlags().StringVarP(&targetURL, "api", "a", "", "The url for the pipeline api")
+	RootCmd.PersistentFlags().StringVarP(&apiURL, "api", "a", "", "The url for the pipeline api")
 	RootCmd.PersistentFlags().StringVarP(&apitoken, "token", "t", "", "The API token to use for authentication")
 	RootCmd.PersistentFlags().BoolVarP(&verbose, "verbose", "v", false, "Turn on verbose logging")
 }

@@ -2,17 +2,13 @@ package client
 
 import (
 	"encoding/json"
-	"fmt"
 
 	"github.com/naveego/api/types/pipeline"
 )
 
-func (cli *Client) GetPublisherInstance(publisherId string) (pipeline.PublisherInstance, error) {
+func (cli *Client) GetPublisherInstance(publisherID string) (pipeline.PublisherInstance, error) {
 	var publisher pipeline.PublisherInstance
-
-	publisherURL := fmt.Sprintf("/pipeline/publisherinstances/%s", publisherId)
-
-	resp, err := cli.sendRequest("GET", publisherURL, nil, nil)
+	resp, err := cli.get("/pipeline/publishers/"+publisherID, nil)
 	if err != nil {
 		return publisher, err
 	}

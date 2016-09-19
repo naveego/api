@@ -5,7 +5,6 @@ type ackMessage struct {
 }
 
 func (cli *Client) AcknowledgeQueueMessages(messageIDs []int64) error {
-
 	acks := []ackMessage{}
 
 	for _, ID := range messageIDs {
@@ -14,7 +13,6 @@ func (cli *Client) AcknowledgeQueueMessages(messageIDs []int64) error {
 		})
 	}
 
-	_, err := cli.sendRequest("POST", "/queues/acknowledged", acks, nil)
+	_, err := cli.post("/queues/acknowledged", acks, nil)
 	return err
-
 }

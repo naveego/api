@@ -22,7 +22,7 @@ func runPublish(cmd *cobra.Command, args []string) error {
 		PublisherInstance: publisherInstance,
 	}
 
-	transport := publisher.NewDataTransport(targetURL, apitoken, log)
+	transport := publisher.NewDataTransport(publisherInstance.PublishEndpoint, apitoken, log)
 	p := pubFactory()
 	p.Publish(ctx, transport)
 	return nil

@@ -33,6 +33,22 @@ type serverResponse struct {
 	statusCode int
 }
 
+func (cli *Client) get(path string, headers map[string][]string) (serverResponse, error) {
+	return cli.sendRequest("GET", path, nil, headers)
+}
+
+func (cli *Client) post(path string, data interface{}, headers map[string][]string) (serverResponse, error) {
+	return cli.sendRequest("POST", path, data, headers)
+}
+
+func (cli *Client) put(path string, data interface{}, headers map[string][]string) (serverResponse, error) {
+	return cli.sendRequest("PUT", path, data, headers)
+}
+
+func (cli *Client) delete(path string, headers map[string][]string) (serverResponse, error) {
+	return cli.sendRequest("DELETE", path, nil, headers)
+}
+
 func (cli *Client) sendRequest(method, path string, obj interface{}, headers map[string][]string) (serverResponse, error) {
 	var body io.Reader
 

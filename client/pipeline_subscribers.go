@@ -2,17 +2,13 @@ package client
 
 import (
 	"encoding/json"
-	"fmt"
 
 	"github.com/naveego/api/types/pipeline"
 )
 
 func (cli *Client) GetSubscriber(subscriberID string) (pipeline.SubscriberInstance, error) {
 	var subscriber pipeline.SubscriberInstance
-
-	resourceURL := fmt.Sprintf("/subscriberinstances/%s", subscriberID)
-
-	resp, err := cli.sendRequest("GET", resourceURL, nil, nil)
+	resp, err := cli.get("/pipeline/subscribers/"+subscriberID, nil)
 	if err != nil {
 		return subscriber, err
 	}

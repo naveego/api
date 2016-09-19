@@ -2,7 +2,6 @@ package client
 
 import (
 	"encoding/json"
-	"fmt"
 
 	"github.com/naveego/api/types/queue"
 )
@@ -14,9 +13,7 @@ type queueMessagesResponse struct {
 func (cli *Client) ReadQueueMessages(queueID string) ([]queue.Message, error) {
 	messages := []queue.Message{}
 
-	resourceURL := fmt.Sprintf("/queues/%s/messages", queueID)
-
-	r, err := cli.sendRequest("GET", resourceURL, nil, nil)
+	r, err := cli.get("/queues/"+queueID+"/messages", nil)
 	if err != nil {
 		return messages, err
 	}
