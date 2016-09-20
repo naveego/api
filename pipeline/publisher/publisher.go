@@ -66,12 +66,6 @@ func unregisterAllFactories() {
 
 type Factory func() Publisher
 
-type Context struct {
-	PublisherInstance pipeline.PublisherInstance // Reference to the publisher data from the expectedPublisher
-	APIToken          string                     // The API token to use for authentication
-	Logger            *logrus.Entry
-}
-
 // Publisher provides the core API for publishing data to the pipeline.
 type Publisher interface {
 
@@ -84,4 +78,26 @@ type Publisher interface {
 	// When Publish is called it will be provided with an execution
 	// context, a transport for sending data points.
 	Publish(ctx Context, dataTransport DataTransport)
+}
+
+type Context struct {
+	PublisherInstance pipeline.PublisherInstance // Reference to the publisher data from the expectedPublisher
+	APIToken          string                     // The API token to use for authentication
+	Logger            *logrus.Entry
+}
+
+// GetStringSetting is a helper function that will read a setting
+// as a string, and let the caller know if it was valid or not.
+func (c *Context) GetStringSetting(path string) (string, bool) {
+	rawValue, ok := c.PublisherInstance.Settings[path]
+	if !ok {
+		return "", false
+	}
+
+	val, ok := rawValue.(string)
+	if !ok || val == "" {
+		return "", false
+	}
+
+	return val, true
 }
