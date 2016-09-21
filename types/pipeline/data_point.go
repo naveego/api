@@ -73,7 +73,7 @@ func (d *DataPoint) Validate() error {
 	}
 
 	if validRepositoryOrEntityRegex.MatchString(d.Entity) == false {
-		return errors.Error{Code: InvalidEntityError, Message: "entity does not meeting naming requirements"}
+		return errors.Error{Code: InvalidEntityError, Message: "entity does not meet naming requirements"}
 	}
 
 	if d.Action == "" {
