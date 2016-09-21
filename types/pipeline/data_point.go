@@ -17,7 +17,8 @@ const (
 )
 
 var (
-	validRepositoryOrEntityRegex *regexp.Regexp
+	validRepositoryRegex *regexp.Regexp
+	validEntityRegex     *regexp.Regexp
 
 	// Error codes start with the HTTP status codes they represent
 	// followed by a more specific code
@@ -38,10 +39,8 @@ var (
 func init() {
 	var err error
 	// Get the name regex ready to go
-	validRepositoryOrEntityRegex, err = regexp.Compile("^[a-zA-Z0-9_]{3,15}$")
-	if err != nil {
-		panic(err)
-	}
+	validRepositoryRegex = regexp.MustCompile("^[a-zA-Z0-9_]{3,15}$")
+	validEntityRegex = regexp.MustCompile("^[a-zA-Z0-9_]{3,30}$")
 }
 
 // DataPoint represents a pipeline dataPoint that can flow through the
@@ -64,7 +63,7 @@ func (d *DataPoint) Validate() error {
 		return errors.Error{Code: NoRepositoryError, Message: "no repository was defined"}
 	}
 
-	if validRepositoryOrEntityRegex.MatchString(d.Repository) == false {
+	if validRepositoryRegex.MatchString(d.Repository) == false {
 		return errors.Error{Code: InvalidRepositoryError, Message: "repository does not meet naming requirements"}
 	}
 
@@ -72,7 +71,7 @@ func (d *DataPoint) Validate() error {
 		return errors.Error{Code: NoEntityError, Message: "no entity was defined"}
 	}
 
-	if validRepositoryOrEntityRegex.MatchString(d.Entity) == false {
+	if validEntityRegex.MatchString(d.Entity) == false {
 		return errors.Error{Code: InvalidEntityError, Message: "entity does not meet naming requirements"}
 	}
 
