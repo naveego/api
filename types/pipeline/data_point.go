@@ -53,6 +53,7 @@ type DataPoint struct {
 	Shape      Shape                  `json:"shape,omitempty"` // optional: The shape of the data
 	Action     DataPointAction        `json:"action"`          // The action for the dataPoint
 	KeyNames   []string               `json:"keyNames"`        // The list of data properties that uniquely identify the dataPoint
+	Meta       map[string]string      `json:"meta,omitempty"`  // An optional map of strings for sending metadata
 	Data       map[string]interface{} `json:"data"`            // The data being sent through the pipe
 }
 
