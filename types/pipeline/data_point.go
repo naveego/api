@@ -37,7 +37,6 @@ var (
 )
 
 func init() {
-	var err error
 	// Get the name regex ready to go
 	validRepositoryRegex = regexp.MustCompile("^[a-zA-Z0-9_]{3,15}$")
 	validEntityRegex = regexp.MustCompile("^[a-zA-Z0-9_]{3,30}$")
