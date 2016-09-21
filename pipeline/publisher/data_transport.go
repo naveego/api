@@ -60,9 +60,10 @@ func (dt *defaultTransport) Send(dataPoints []pipeline.DataPoint) error {
 
 	cli := http.Client{}
 	resp, err := cli.Do(req)
-	if resp == nil && err != nil {
+	if err != nil {
 		return err
 	}
+	defer resp.Body.Close()
 
 	if resp.StatusCode < 200 || resp.StatusCode >= 400 {
 		return fmt.Errorf("The API returned HTTP Status %d", resp.StatusCode)

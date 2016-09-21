@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io"
+	"io/ioutil"
 	"net/http"
 )
 
@@ -28,7 +29,7 @@ func NewClient(host, version string, httpHeaders map[string]string) (*Client, er
 }
 
 type serverResponse struct {
-	body       io.ReadCloser
+	body       io.Reader
 	header     http.Header
 	statusCode int
 }
@@ -87,6 +88,7 @@ func (cli *Client) sendRequest(method, path string, obj interface{}, headers map
 	if err != nil {
 		return serverResp, fmt.Errorf("An error occurred trying to connect: %v", err)
 	}
+	defer resp.Body.Close()
 
 	if resp != nil {
 		serverResp.statusCode = resp.StatusCode
@@ -96,7 +98,12 @@ func (cli *Client) sendRequest(method, path string, obj interface{}, headers map
 		return serverResp, fmt.Errorf("Error response from server: %s", "")
 	}
 
-	serverResp.body = resp.Body
+	respBody, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return serverResp, err
+	}
+
+	serverResp.body = ioutil.NopCloser(bytes.NewReader(respBody))
 	serverResp.header = resp.Header
 	return serverResp, nil
 }
