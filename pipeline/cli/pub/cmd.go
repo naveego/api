@@ -2,10 +2,12 @@ package pub
 
 import (
 	"fmt"
+	"os"
 	"strings"
 
 	"github.com/Sirupsen/logrus"
 	"github.com/naveego/api/client"
+	"github.com/naveego/api/pipeline/cli/logging"
 	"github.com/naveego/api/types/pipeline"
 	"github.com/spf13/cobra"
 )
@@ -54,7 +56,17 @@ var RootCmd = &cobra.Command{
 			return err
 		}
 
-		log = logrus.WithField("publisher_id", publisherID)
+		// Setup logging
+		log = logrus.WithFields(logrus.Fields{
+			"repository": publisherInstance.Repository,
+			"pipeline": map[string]interface{}{
+				"publisher_id": publisherID,
+			},
+		})
+
+		host, _ := os.Hostname()
+		apiLog := logging.NewAPILogHook(publisherInstance.LogEndpoint, host)
+		logrus.AddHook(apiLog)
 		return nil
 	},
 }

@@ -20,6 +20,7 @@ var (
 	apiClient  *client.Client
 	apitoken   string
 	log        *logrus.Entry
+	verbose    bool
 )
 
 var RootCmd = &cobra.Command{
@@ -28,7 +29,9 @@ var RootCmd = &cobra.Command{
 	RunE:  nil,
 	PersistentPreRunE: func(cmd *cobra.Command, args []string) error {
 
-		logrus.SetLevel(logrus.DebugLevel)
+		if *verbose {
+			logrus.SetLevel(logrus.DebugLevel)
+		}
 
 		bearerStr := fmt.Sprintf("Bearer %s", apitoken)
 
@@ -52,6 +55,7 @@ func init() {
 	RootCmd.SilenceUsage = true
 	RootCmd.PersistentFlags().StringVarP(&targetURL, "url", "u", "", "The url for the pipeline api")
 	RootCmd.PersistentFlags().StringVarP(&apitoken, "token", "t", "", "The API token to use for authentication")
+	RootCmd.PersistentFlags().BoolVarP(&verbose, "verbose", "v", false, "Enable verbose logging")
 }
 
 // Execute is the main entry command for the package.  It creates a
