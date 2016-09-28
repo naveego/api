@@ -58,7 +58,7 @@ func TestDataPointValidation(t *testing.T) {
 		})
 
 		Convey("When the entity is too long, should return error code 4220005", func() {
-			msg := DataPoint{Repository: "test", Entity: "userentitythatistoolong", Action: "upsert", KeyNames: []string{"id"}, Data: testData{"id": 1, "name": "Derek"}}
+			msg := DataPoint{Repository: "test", Entity: "userentitythatistoolonglkjasfoiwjeifwekrwalkafeajke", Action: "upsert", KeyNames: []string{"id"}, Data: testData{"id": 1, "name": "Derek"}}
 			err := msg.Validate().(errors.Error)
 			So(err.Code, ShouldEqual, 4220005)
 		})

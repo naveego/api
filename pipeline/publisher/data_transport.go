@@ -23,6 +23,8 @@ type DataTransport interface {
 type defaultTransport struct {
 	pipelineURL string
 	apiToken    string
+	repository  string
+	source      string
 	httpClient  *http.Client
 	log         *logrus.Entry
 }

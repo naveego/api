@@ -8,13 +8,11 @@ import (
 )
 
 var (
-	readerAddr    string
 	subscriberID  string
 	subscriberRef pipeline.SubscriberInstance
 )
 
 func init() {
-	subscribeCmd.Flags().StringVar(&readerAddr, "readeraddr", "127.0.0.1:9092", "The address for the reader to use to read data points")
 	subscribeCmd.Flags().StringVar(&subscriberID, "subscriberid", "", "The ID of the subscriber")
 }
 
@@ -31,7 +29,12 @@ func runPreSubscribe(cmd *cobra.Command, args []string) error {
 	if err != nil {
 		logrus.Warn("Error Fetching Subscriber From API: ", err)
 	}
-	log = logrus.WithField("repository", subscriberRef.Repository)
+	log = logrus.WithFields(logrus.Fields{
+		"repository": subscriberRef.Repository,
+		"pipeline": map[string]interface{}{
+			"subscriber_id": subscriberID,
+		},
+	})
 	return err
 }
 
@@ -54,9 +57,9 @@ func runSubscribe(cmd *cobra.Command, args []string) error {
 
 	ctx.Logger = log
 
-	log.Debugf("Setting Up Stream Reader: %s %s", readerAddr, "pipe-test-WellAttribute")
+	log.Debugf("Setting Up Stream Reader: %s %s", subscriberRef.StreamEndpoint, subscriberRef.InputStream)
 
-	streamReader, err := subscriber.NewStreamReader(readerAddr, "pipe-test-WellAttribute")
+	streamReader, err := subscriber.NewStreamReader(subscriberRef, subscriberRef.InputStream)
 	if err != nil {
 		return err
 	}

@@ -16,42 +16,29 @@ var castagnoliTable = crc32.MakeTable(crc32.Castagnoli) // see http://golang.org
 // may be provided from the producer, but it is not required.  The pipeline will generate type information
 // automatically based on the data itself.
 type Shape struct {
+	KeyNames     []string `json:"keyNames,omitempty"`     // An array of key property names
+	KeyNamesHash uint32   `json:"keyNamesHash,omitempty"` // A hash used to determine if keys have changed
 	Properties   []string `json:"properties,omitempty"`   // An array of properties including type, the form of [name]:[type]
 	PropertyHash uint32   `json:"propertyHash,omitempty"` // A hash used to determine if the properties have changed
 }
 
-func NewShapeFromProperties(properties []string) (Shape, error) {
+func NewShape(keyNames, properties []string) (Shape, error) {
 
 	shape := Shape{}
 
-	sort.Sort(sortByPropName(properties))
-
-	// We are using a CRC check sum because it is very
-	// efficient.  We are simply looking for a change,
-	// we are not giving an identity.  Therefore, we don't
-	// have to be concered about collisions.
-	crcStr := ""
-	propLen := len(properties)
-
-	// We are using a lower case value for the properties
-	// in order to allow for case in-sensitivity.
-	for i, prop := range properties {
-		crcStr = crcStr + strings.ToLower(prop)
-
-		if i < (propLen - 1) {
-			crcStr = crcStr + ","
-		}
+	keyHash, err := hashArray(keyNames)
+	if err != nil {
+		return shape, err
 	}
-
-	crc := crc32.New(castagnoliTable)
-
-	if _, err := crc.Write([]byte(crcStr)); err != nil {
+	propHash, err := hashArray(properties)
+	if err != nil {
 		return shape, err
 	}
 
+	shape.KeyNames = keyNames
+	shape.KeyNamesHash = keyHash
 	shape.Properties = properties
-	shape.PropertyHash = crc.Sum32()
-
+	shape.PropertyHash = propHash
 	return shape, nil
 
 }
@@ -60,7 +47,7 @@ func NewShapeFromProperties(properties []string) (Shape, error) {
 // and return a Shape. This shape can be used to determine if the set of properties has changed
 // between data points.
 type Shaper interface {
-	GetShape(data map[string]interface{}) (Shape, error) // Gets the shape of a given data structure
+	GetShape(keyNames []string, data map[string]interface{}) (Shape, error) // Gets the shape of a given data structure
 }
 
 type shaper struct {
@@ -91,7 +78,7 @@ func NewShaper() Shaper {
 	return &shaper{}
 }
 
-func (s *shaper) GetShape(data map[string]interface{}) (shape Shape, err error) {
+func (s *shaper) GetShape(keyNames []string, data map[string]interface{}) (shape Shape, err error) {
 
 	var properties []string
 
@@ -111,7 +98,7 @@ func (s *shaper) GetShape(data map[string]interface{}) (shape Shape, err error) 
 
 	getShapeRecursive(&properties, "", data)
 
-	shape, err = NewShapeFromProperties(properties)
+	shape, err = NewShape(keyNames, properties)
 
 	return shape, err
 }
@@ -175,4 +162,33 @@ func isDate(val string) bool {
 	}
 
 	return false
+}
+
+func hashArray(properties []string) (uint32, error) {
+	sort.Sort(sortByPropName(properties))
+
+	// We are using a CRC check sum because it is very
+	// efficient.  We are simply looking for a change,
+	// we are not giving an identity.  Therefore, we don't
+	// have to be concered about collisions.
+	crcStr := ""
+	propLen := len(properties)
+
+	// We are using a lower case value for the properties
+	// in order to allow for case in-sensitivity.
+	for i, prop := range properties {
+		crcStr = crcStr + strings.ToLower(prop)
+
+		if i < (propLen - 1) {
+			crcStr = crcStr + ","
+		}
+	}
+
+	crc := crc32.New(castagnoliTable)
+
+	if _, err := crc.Write([]byte(crcStr)); err != nil {
+		return 0, err
+	}
+
+	return crc.Sum32(), nil
 }

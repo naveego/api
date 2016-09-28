@@ -101,3 +101,14 @@ func (c *Context) GetStringSetting(path string) (string, bool) {
 
 	return val, true
 }
+
+func (c *Context) NewDataPoint(entity string, keyNames []string, data map[string]interface{}) pipeline.DataPoint {
+	return pipeline.DataPoint{
+		Repository: c.PublisherInstance.Repository,
+		Entity:     entity,
+		Source:     c.PublisherInstance.SourceName,
+		Action:     "upsert",
+		KeyNames:   keyNames,
+		Data:       data,
+	}
+}
