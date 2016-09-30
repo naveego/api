@@ -1,16 +1,15 @@
-package sub
+package subscriber
 
 import (
 	"testing"
 
-	"github.com/naveego/api/pipeline/subscriber"
 	"github.com/naveego/api/types/pipeline"
 
 	. "github.com/smartystreets/goconvey/convey"
 )
 
 var (
-	testSubscriber = pipeline.SubscriberInstance{
+	testSubscriberInst = pipeline.SubscriberInstance{
 		ID:             "sub-1",
 		SafeName:       "sub1",
 		Repository:     "test",
@@ -66,7 +65,7 @@ func TestGenerateShapeInfo(t *testing.T) {
 
 	Convey("Given a data point with a shape that does not exists in Subscriber.Shapes", t, func() {
 
-		shapeInfo := generateShapeInfo(testSubscriber, testDataPoint)
+		shapeInfo := GenerateShapeInfo(testSubscriberInst, testDataPoint)
 
 		Convey("Should return a shape info", func() {
 			Convey("with IsNew = true", func() {
@@ -94,7 +93,7 @@ func TestGenerateShapeInfo(t *testing.T) {
 				So(shapeInfo.NewKeys, ShouldResemble, []string{"id"})
 			})
 			Convey("with NewProperties = ['age':'number','id':'number','name':'string']", func() {
-				So(shapeInfo.NewProperties, ShouldResemble, subscriber.PropertiesAndTypes{
+				So(shapeInfo.NewProperties, ShouldResemble, PropertiesAndTypes{
 					"age":  "number",
 					"id":   "number",
 					"name": "string",
@@ -106,11 +105,11 @@ func TestGenerateShapeInfo(t *testing.T) {
 
 	Convey("Given a data point with a shape that is exactly the same as an existing shape in Subscriber.Shapes", t, func() {
 
-		testSubscriber.Shapes[testDataPoint.Entity] = testShape
-		shapeInfo := generateShapeInfo(testSubscriber, testDataPoint)
+		testSubscriberInst.Shapes[testDataPoint.Entity] = testShape
+		shapeInfo := GenerateShapeInfo(testSubscriberInst, testDataPoint)
 
 		Reset(func() {
-			testSubscriber.Shapes = map[string]pipeline.Shape{}
+			testSubscriberInst.Shapes = map[string]pipeline.Shape{}
 		})
 
 		Convey("Should return a shape info", func() {
@@ -143,11 +142,11 @@ func TestGenerateShapeInfo(t *testing.T) {
 	})
 
 	Convey("Given a data point with a shape that has new properties", t, func() {
-		testSubscriber.Shapes[testDataPoint.Entity] = testShapeNoAge
-		shapeInfo := generateShapeInfo(testSubscriber, testDataPoint)
+		testSubscriberInst.Shapes[testDataPoint.Entity] = testShapeNoAge
+		shapeInfo := GenerateShapeInfo(testSubscriberInst, testDataPoint)
 
 		Reset(func() {
-			testSubscriber.Shapes = map[string]pipeline.Shape{}
+			testSubscriberInst.Shapes = map[string]pipeline.Shape{}
 		})
 
 		Convey("Should return a shape info", func() {
@@ -173,7 +172,7 @@ func TestGenerateShapeInfo(t *testing.T) {
 				So(shapeInfo.NewKeys, ShouldBeEmpty)
 			})
 			Convey("with NewProperties = ['age':'number']", func() {
-				So(shapeInfo.NewProperties, ShouldResemble, subscriber.PropertiesAndTypes{
+				So(shapeInfo.NewProperties, ShouldResemble, PropertiesAndTypes{
 					"age": "number",
 				})
 			})
@@ -181,11 +180,11 @@ func TestGenerateShapeInfo(t *testing.T) {
 	})
 
 	Convey("Given a data point with a shape that has fewer properties than existing shape", t, func() {
-		testSubscriber.Shapes[testDataPointNoAge.Entity] = testShape
-		shapeInfo := generateShapeInfo(testSubscriber, testDataPointNoAge)
+		testSubscriberInst.Shapes[testDataPointNoAge.Entity] = testShape
+		shapeInfo := GenerateShapeInfo(testSubscriberInst, testDataPointNoAge)
 
 		Reset(func() {
-			testSubscriber.Shapes = map[string]pipeline.Shape{}
+			testSubscriberInst.Shapes = map[string]pipeline.Shape{}
 		})
 
 		Convey("Should return a shape info", func() {
@@ -217,13 +216,13 @@ func TestGenerateShapeInfo(t *testing.T) {
 	})
 
 	Convey("Given a data point with different keys", t, func() {
-		testSubscriber.Shapes[testDataPoint.Entity] = testShape
+		testSubscriberInst.Shapes[testDataPoint.Entity] = testShape
 		testDataPoint.Shape = *(&testShape)
 		testDataPoint.Shape.KeyNames = []string{"name"}
-		shapeInfo := generateShapeInfo(testSubscriber, testDataPoint)
+		shapeInfo := GenerateShapeInfo(testSubscriberInst, testDataPoint)
 
 		Reset(func() {
-			testSubscriber.Shapes = map[string]pipeline.Shape{}
+			testSubscriberInst.Shapes = map[string]pipeline.Shape{}
 		})
 
 		Convey("Should return a shape info", func() {
