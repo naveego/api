@@ -25,11 +25,16 @@ type Shape struct {
 func NewShape(keyNames, properties []string) (Shape, error) {
 
 	shape := Shape{}
+	keyHash := uint32(0)
 
-	keyHash, err := hashArray(keyNames)
-	if err != nil {
-		return shape, err
+	if keyNames != nil {
+		var err error
+		keyHash, err = hashArray(keyNames)
+		if err != nil {
+			return shape, err
+		}
 	}
+
 	propHash, err := hashArray(properties)
 	if err != nil {
 		return shape, err

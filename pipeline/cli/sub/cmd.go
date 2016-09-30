@@ -5,7 +5,7 @@ import (
 	"strings"
 
 	"github.com/Sirupsen/logrus"
-	"github.com/naveego/api/pipeline/client"
+	"github.com/naveego/api/client"
 	"github.com/spf13/cobra"
 )
 
@@ -29,7 +29,7 @@ var RootCmd = &cobra.Command{
 	RunE:  nil,
 	PersistentPreRunE: func(cmd *cobra.Command, args []string) error {
 
-		if *verbose {
+		if verbose {
 			logrus.SetLevel(logrus.DebugLevel)
 		}
 

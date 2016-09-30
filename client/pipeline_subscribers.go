@@ -20,3 +20,12 @@ func (cli *Client) GetSubscriber(subscriberID string) (pipeline.SubscriberInstan
 
 	return subscriber, nil
 }
+
+func (cli *Client) UpdateSubscriber(subscriber pipeline.SubscriberInstance) error {
+	_, err := cli.put("/pipeline/subscribers/"+subscriber.ID, subscriber, nil)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}

@@ -74,7 +74,7 @@ type Context struct {
 
 // Subscriber represents the API for receiving data from the pipeline.
 type Subscriber interface {
-	Receive(ctx Context, dataPoint pipeline.DataPoint)
+	Receive(ctx Context, shapeInfo ShapeInfo, dataPoint pipeline.DataPoint)
 }
 
 type Initer interface {

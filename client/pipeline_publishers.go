@@ -20,3 +20,5 @@ func (cli *Client) GetPublisherInstance(publisherID string) (pipeline.PublisherI
 
 	return publisher, nil
 }
+
+
