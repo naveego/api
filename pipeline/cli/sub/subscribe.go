@@ -66,7 +66,7 @@ func runSubscribe(cmd *cobra.Command, args []string) error {
 	}
 
 	for dataPoint := range streamReader.DataPoints() {
-		shapeInfo := subscriber.GenerateShapeInfo(subscriberRef, dataPoint)
+		shapeInfo := subscriber.GenerateShapeInfo(subscriberRef.Shapes, dataPoint)
 
 		if shapeInfo.HasChanges() {
 			err := apiClient.UpdateSubscriber(subscriberRef)

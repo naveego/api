@@ -32,7 +32,7 @@ func (si ShapeInfo) HasChanges() bool {
 // GenerateShapeInfo will determine the diffferences between an existing shape and the shape of a new
 // data point.  If the new shape is a subset of the current shape it is not considered a change.  This
 // is due to the fact that it does not represent a change that needs to be made in the storge system.
-func GenerateShapeInfo(sub pipeline.SubscriberInstance, dataPoint pipeline.DataPoint) ShapeInfo {
+func GenerateShapeInfo(knownShapes map[string]pipeline.Shape, dataPoint pipeline.DataPoint) ShapeInfo {
 	shape := dataPoint.Shape
 
 	// create the info
@@ -41,7 +41,7 @@ func GenerateShapeInfo(sub pipeline.SubscriberInstance, dataPoint pipeline.DataP
 	}
 
 	// Get the shape if we already know about it
-	prevShape, ok := sub.Shapes[dataPoint.Entity]
+	prevShape, ok := knownShapes[dataPoint.Entity]
 
 	// If this shape does not exists previously then
 	// we need to treat it as brand new

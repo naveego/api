@@ -9,15 +9,7 @@ import (
 )
 
 var (
-	testSubscriberInst = pipeline.SubscriberInstance{
-		ID:             "sub-1",
-		SafeName:       "sub1",
-		Repository:     "test",
-		Type:           "test@github.com/naveego/pipeline-subscribers",
-		InputStream:    "stream-1",
-		StreamEndpoint: "127.0.0.1:9092",
-		Shapes:         map[string]pipeline.Shape{},
-	}
+	knownShapes = map[string]pipeline.Shape{}
 
 	testShape = pipeline.Shape{
 		KeyNames:     []string{"id"},
@@ -65,7 +57,7 @@ func TestGenerateShapeInfo(t *testing.T) {
 
 	Convey("Given a data point with a shape that does not exists in Subscriber.Shapes", t, func() {
 
-		shapeInfo := GenerateShapeInfo(testSubscriberInst, testDataPoint)
+		shapeInfo := GenerateShapeInfo(knownShapes, testDataPoint)
 
 		Convey("Should return a shape info", func() {
 			Convey("with IsNew = true", func() {
@@ -105,11 +97,11 @@ func TestGenerateShapeInfo(t *testing.T) {
 
 	Convey("Given a data point with a shape that is exactly the same as an existing shape in Subscriber.Shapes", t, func() {
 
-		testSubscriberInst.Shapes[testDataPoint.Entity] = testShape
-		shapeInfo := GenerateShapeInfo(testSubscriberInst, testDataPoint)
+		knownShapes[testDataPoint.Entity] = testShape
+		shapeInfo := GenerateShapeInfo(knownShapes, testDataPoint)
 
 		Reset(func() {
-			testSubscriberInst.Shapes = map[string]pipeline.Shape{}
+			knownShapes = map[string]pipeline.Shape{}
 		})
 
 		Convey("Should return a shape info", func() {
@@ -142,11 +134,11 @@ func TestGenerateShapeInfo(t *testing.T) {
 	})
 
 	Convey("Given a data point with a shape that has new properties", t, func() {
-		testSubscriberInst.Shapes[testDataPoint.Entity] = testShapeNoAge
-		shapeInfo := GenerateShapeInfo(testSubscriberInst, testDataPoint)
+		knownShapes[testDataPoint.Entity] = testShapeNoAge
+		shapeInfo := GenerateShapeInfo(knownShapes, testDataPoint)
 
 		Reset(func() {
-			testSubscriberInst.Shapes = map[string]pipeline.Shape{}
+			knownShapes = map[string]pipeline.Shape{}
 		})
 
 		Convey("Should return a shape info", func() {
@@ -180,11 +172,11 @@ func TestGenerateShapeInfo(t *testing.T) {
 	})
 
 	Convey("Given a data point with a shape that has fewer properties than existing shape", t, func() {
-		testSubscriberInst.Shapes[testDataPointNoAge.Entity] = testShape
-		shapeInfo := GenerateShapeInfo(testSubscriberInst, testDataPointNoAge)
+		knownShapes[testDataPointNoAge.Entity] = testShape
+		shapeInfo := GenerateShapeInfo(knownShapes, testDataPointNoAge)
 
 		Reset(func() {
-			testSubscriberInst.Shapes = map[string]pipeline.Shape{}
+			knownShapes = map[string]pipeline.Shape{}
 		})
 
 		Convey("Should return a shape info", func() {
@@ -216,13 +208,13 @@ func TestGenerateShapeInfo(t *testing.T) {
 	})
 
 	Convey("Given a data point with different keys", t, func() {
-		testSubscriberInst.Shapes[testDataPoint.Entity] = testShape
+		knownShapes[testDataPoint.Entity] = testShape
 		testDataPoint.Shape = *(&testShape)
 		testDataPoint.Shape.KeyNames = []string{"name"}
-		shapeInfo := GenerateShapeInfo(testSubscriberInst, testDataPoint)
+		shapeInfo := GenerateShapeInfo(knownShapes, testDataPoint)
 
 		Reset(func() {
-			testSubscriberInst.Shapes = map[string]pipeline.Shape{}
+			knownShapes = map[string]pipeline.Shape{}
 		})
 
 		Convey("Should return a shape info", func() {
