@@ -32,8 +32,8 @@ func TestShaper(t *testing.T) {
 			[]string{"id"},
 			"id",
 			map[string]interface{}{"id": 1, "name": nil, "active": true},
-			[]string{"active:bool", "id:number", "name:unknown"},
-			"active:bool,id:number,name:unknown",
+			[]string{"active:bool", "id:number"},
+			"active:bool,id:number",
 			"",
 		},
 		{

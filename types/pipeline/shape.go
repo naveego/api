@@ -132,8 +132,6 @@ func getShapeRecursive(properties *[]string, prefix string, data map[string]inte
 		case map[string]interface{}:
 			*properties = append(*properties, propName+":object")
 			getShapeRecursive(properties, propName, val.(map[string]interface{}))
-		default:
-			*properties = append(*properties, propName+":unknown")
 		}
 	}
 
