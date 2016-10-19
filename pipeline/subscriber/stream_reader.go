@@ -2,7 +2,6 @@ package subscriber
 
 import (
 	"encoding/json"
-	"io/ioutil"
 	"time"
 
 	"github.com/Shopify/sarama"
@@ -38,14 +37,21 @@ func NewStreamReaderWithLogging(addr, stream, readerID string, log *logrus.Entry
 	// Bufferred channel to hold incoming datapoints
 	messages := make(chan StreamMessage, 100)
 
+	// If log was not provided default to logrus
+	if log == nil {
+		log = logrus.WithField("default", true)
+	}
+
 	config := consumergroup.NewConfig()
 	config.Zookeeper.Timeout = 15 * time.Second
 	config.Offsets.Initial = sarama.OffsetOldest
 	config.Offsets.ProcessingTimeout = 15 * time.Second
 
+	log.Debugf("Stream Reader: connecting to zknodes at %s", addr)
 	var zkNodes []string
 	zkNodes, config.Zookeeper.Chroot = kazoo.ParseConnectionString(addr)
 
+	log.Debugf("Stream Reader: joining consumer group with id %s", readerID)
 	consumer, err := consumergroup.JoinConsumerGroup(readerID, []string{stream}, zkNodes, config)
 	if err != nil {
 		return nil, err
@@ -58,11 +64,9 @@ func NewStreamReaderWithLogging(addr, stream, readerID string, log *logrus.Entry
 	}
 
 	go reader.messageLoop()
+	go reader.errorLoop()
 
-	if log != nil {
-		go reader.errorLoop()
-	}
-
+	logrus.Debug("Stream Reader: successfully created reader")
 	return reader, nil
 }
 
@@ -93,14 +97,14 @@ func (sr *defaultStreamReader) errorLoop() {
 }
 
 func (sr *defaultStreamReader) messageLoop() {
+	sr.log.Debug("Stream Reader: Starting Message Loop")
+
 	for msg := range sr.consumer.Messages() {
 		var dataPoint pipeline.DataPoint
 
-		ioutil.WriteFile("Message.json", msg.Value, 777)
-
 		err := json.Unmarshal(msg.Value, &dataPoint)
 		if err != nil {
-			panic(err)
+			sr.log.Panic(err)
 		}
 
 		sr.messages <- StreamMessage{
