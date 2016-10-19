@@ -8,7 +8,7 @@ import (
 
 func (cli *Client) GetPublisherInstance(publisherID string) (pipeline.PublisherInstance, error) {
 	var publisher pipeline.PublisherInstance
-	resp, err := cli.get("/pipeline/publishers/"+publisherID, nil)
+	resp, err := cli.get("/publishers/"+publisherID, nil)
 	if err != nil {
 		return publisher, err
 	}
@@ -20,5 +20,3 @@ func (cli *Client) GetPublisherInstance(publisherID string) (pipeline.PublisherI
 
 	return publisher, nil
 }
-
-

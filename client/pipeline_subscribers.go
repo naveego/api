@@ -8,7 +8,7 @@ import (
 
 func (cli *Client) GetSubscriber(subscriberID string) (pipeline.SubscriberInstance, error) {
 	var subscriber pipeline.SubscriberInstance
-	resp, err := cli.get("/pipeline/subscribers/"+subscriberID, nil)
+	resp, err := cli.get("/subscribers/"+subscriberID, nil)
 	if err != nil {
 		return subscriber, err
 	}
