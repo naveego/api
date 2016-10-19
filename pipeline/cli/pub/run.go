@@ -55,7 +55,7 @@ func runRun(cmd *cobra.Command, args []string) error {
 			PublisherInstance: publisherInstance,
 		}
 
-		transport := publisher.NewDataTransport(publisherInstance.PublishEndpoint, apitoken, log)
+		transport := publisher.NewDataTransport(apiURL, apitoken, log)
 		p := pubFactory()
 		p.Publish(ctx, transport)
 
