@@ -1,6 +1,8 @@
 package cli
 
 import (
+	"fmt"
+	"os"
 	"os/exec"
 	"path/filepath"
 	"strings"
@@ -57,6 +59,7 @@ func (c Command) Execute() Command {
 
 	command := exec.Command(c.executable, c.arguments...)
 	command.Dir = c.directory
+	command.Env = []string{"GOOS=linux", "GOARCH=amd64", fmt.Sprintf("GOPATH=%s", os.Getenv("GOPATH"))}
 	var rawOutput []byte
 	rawOutput, c.Error = command.CombinedOutput()
 	c.Output = string(rawOutput)
