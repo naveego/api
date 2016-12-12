@@ -112,7 +112,7 @@ func getShapeRecursive(properties *[]string, prefix string, data map[string]inte
 
 	for key, val := range data {
 
-		if strings.Contains(key, ":") || strings.Contains(key, ",") {
+		if strings.Contains(key, ":") {
 			panic("Invalid character found in property '" + key + "'.")
 		}
 

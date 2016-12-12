@@ -59,14 +59,14 @@ func runSubscribe(cmd *cobra.Command, args []string) error {
 
 	log.Debugf("Setting Up Stream Reader: %s %s", subscriberRef.StreamEndpoint, subscriberRef.InputStream)
 
-	streamReader, err := subscriber.NewStreamReader(subscriberRef.StreamEndpoint, subscriberRef.InputStream)
+	streamReader, err := subscriber.NewStreamReader(subscriberRef.StreamEndpoint, subscriberRef.InputStream, "")
 	if err != nil {
 		log.Error("Error creating stream reader: ", err)
 		return err
 	}
 
-	for dataPoint := range streamReader.DataPoints() {
-		shapeInfo := subscriber.GenerateShapeInfo(subscriberRef.Shapes, dataPoint)
+	for msg := range streamReader.Messages() {
+		shapeInfo := subscriber.GenerateShapeInfo(subscriberRef.Shapes, msg.DataPoint)
 
 		if shapeInfo.HasChanges() {
 			err := apiClient.UpdateSubscriber(subscriberRef)
@@ -75,7 +75,7 @@ func runSubscribe(cmd *cobra.Command, args []string) error {
 			}
 		}
 
-		s.Receive(ctx, shapeInfo, dataPoint)
+		s.Receive(ctx, shapeInfo, msg.DataPoint)
 	}
 	return nil
 }

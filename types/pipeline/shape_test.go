@@ -189,15 +189,15 @@ func TestShaper(t *testing.T) {
 			"",
 			"Invalid character found in property 'date:of:birth'.",
 		},
-		{
-			"Given a field name containing a , should return error",
-			[]string{"id"},
-			"id",
-			map[string]interface{}{"id": 1, "Name": "John", "date,birth": "1981-01-01T12:30:00.323Z"},
-			nil,
-			"",
-			"Invalid character found in property 'date,birth'.",
-		},
+		//{
+		//	"Given a field name containing a , should return error",
+		//		[]string{"id"},
+		//			"id",
+		//			map[string]interface{}{"id": 1, "Name": "John", "date,birth": "1981-01-01T12:30:00.323Z"},
+		//			nil,
+		//			"",
+		//			"Invalid character found in property 'date,birth'.",
+		//		},
 	}
 
 	for _, testCase := range testCases {
