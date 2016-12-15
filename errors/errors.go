@@ -6,4 +6,5 @@ var (
 	BadRequest          = 4000003
 	InternalServer      = 5000004
 	IDMismatch          = 4220005
+	NotFound            = 4040006
 )
