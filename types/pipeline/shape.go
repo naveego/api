@@ -195,3 +195,19 @@ func hashArray(properties []string) (uint32, error) {
 
 	return crc.Sum32(), nil
 }
+
+// ShapeDefinitions is a mapping of shape definition data
+type ShapeDefinitions []ShapeDefinition
+
+type ShapeDefinition struct {
+	Name        string               `json:"name" bson:"name"`
+	Description string               `json:"description" bson:"description"`
+	Keys        []string             `json:"keys" bson:"keys"`
+	Properties  []PropertyDefinition `json:"properties" bson:"properties"`
+}
+
+type PropertyDefinition struct {
+	Name        string `json:"name" bson:"name"`
+	Description string `json:"description", bson:"description"`
+	Type        string `json:"type" bson:"type"`
+}

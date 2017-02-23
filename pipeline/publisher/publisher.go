@@ -69,10 +69,13 @@ type Factory func() Publisher
 // Publisher provides the core API for publishing data to the pipeline.
 type Publisher interface {
 
+	// TestConnection tests the connection to the publisher
+	TestConnection(ctx Context, connSettings map[string]interface{}) (bool, string, error)
+
 	// Shapes returns the shapes that a publisher can send to the pipeline.
 	// Shapes are a core component of the Pipline and represent self describing
 	// data.
-	Shapes(ctx Context) (map[string]pipeline.Shape, error)
+	Shapes(ctx Context) (pipeline.ShapeDefinitions, error)
 
 	// Publish triggers the send data operation on the data source.
 	// When Publish is called it will be provided with an execution
