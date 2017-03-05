@@ -208,6 +208,22 @@ type ShapeDefinition struct {
 
 type PropertyDefinition struct {
 	Name        string `json:"name" bson:"name"`
-	Description string `json:"description", bson:"description"`
+	Description string `json:"description" bson:"description"`
 	Type        string `json:"type" bson:"type"`
+}
+
+type SortShapesByName ShapeDefinitions
+
+func (s SortShapesByName) Len() int {
+	return len(s)
+}
+
+func (s SortShapesByName) Swap(i, j int) {
+	s[i], s[j] = s[j], s[i]
+}
+
+func (s SortShapesByName) Less(i, j int) bool {
+	s1Name := s[i].Name
+	s2Name := s[j].Name
+	return strings.Compare(s1Name, s2Name) < 0
 }
