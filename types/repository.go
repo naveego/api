@@ -6,10 +6,10 @@ import (
 
 // Repository represents the core multi-tenancy boundary in Naveego
 type Repository struct {
-	ID     string                 `json:"id"`     // The id of the repository
-	Name   string                 `json:"name"`   // The name of the repository
-	GoLive string                 `json:"goLive"` // The date the repository went live
-	Config map[string]interface{} `json:"config"` // The configuration of the Repository
+	ID     string                 `json:"id" bson:"_id"` // The id of the repository
+	Name   string                 `json:"name"`          // The name of the repository
+	GoLive string                 `json:"goLive"`        // The date the repository went live
+	Config map[string]interface{} `json:"config"`        // The configuration of the Repository
 }
 
 // HasConfigParam provides a method to determine if a configuration value is defined
@@ -30,6 +30,18 @@ func (r *Repository) GetConfigWithDefault(paramName string, defaultVal interface
 		return defaultVal
 	}
 	return val
+}
+
+func (r *Repository) GetStringConfig(paramName string) (string, bool) {
+	raw := r.GetConfig(paramName)
+	if raw != nil {
+		s, ok := raw.(string)
+		if ok {
+			return s, true
+		}
+	}
+
+	return "", false
 }
 
 func getConfigParamRecursive(config map[string]interface{}, path string) (interface{}, bool) {
