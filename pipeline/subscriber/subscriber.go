@@ -68,7 +68,8 @@ type Factory func() Subscriber
 
 type Context struct {
 	Subscriber pipeline.SubscriberInstance // Reference to the subscriber for this operation
-	APIToken   string                      // The Token to use for API calls
+	Pipeline   pipeline.Pipeline
+	APIToken   string // The Token to use for API calls
 	Logger     *logrus.Entry
 }
 
@@ -80,6 +81,8 @@ type Subscriber interface {
 	// Shapes are a core component of the Pipline and represent self describing
 	// data.
 	Shapes(ctx Context) (pipeline.ShapeDefinitions, error)
+
+	Receive(ctx Context, shape pipeline.ShapeDefinition, dataPoint pipeline.DataPoint) error
 }
 
 type Initer interface {
