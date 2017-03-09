@@ -72,9 +72,14 @@ type Context struct {
 	Logger     *logrus.Entry
 }
 
-// Subscriber represents the API for receiving data from the pipeline.
 type Subscriber interface {
-	Receive(ctx Context, shapeInfo ShapeInfo, dataPoint pipeline.DataPoint)
+	// TestConnection tests the connection to the publisher
+	TestConnection(ctx Context, connSettings map[string]interface{}) (bool, string, error)
+
+	// Shapes returns the shapes that a subscribers can receive from the pipeline.
+	// Shapes are a core component of the Pipline and represent self describing
+	// data.
+	Shapes(ctx Context) (pipeline.ShapeDefinitions, error)
 }
 
 type Initer interface {

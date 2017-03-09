@@ -13,7 +13,13 @@ var (
 
 type testSubscriber struct{}
 
-func (t *testSubscriber) Receive(ctx Context, shapeInfo ShapeInfo, dataPoint pipeline.DataPoint) {}
+func (t *testSubscriber) TestConnection(ctx Context, connSettings map[string]interface{}) (bool, string, error) {
+	return false, "", nil
+}
+
+func (t *testSubscriber) Shapes(ctx Context) (pipeline.ShapeDefinitions, error) {
+	return pipeline.ShapeDefinitions{}, nil
+}
 
 func testSubscriberFactory() Subscriber {
 	return expectedSubscriber
