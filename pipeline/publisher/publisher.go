@@ -80,7 +80,7 @@ type Publisher interface {
 	// Publish triggers the send data operation on the data source.
 	// When Publish is called it will be provided with an execution
 	// context, a transport for sending data points.
-	Publish(ctx Context, dataTransport DataTransport)
+	Publish(ctx Context, shape pipeline.ShapeDefinition, dataTransport DataTransport)
 }
 
 type Context struct {
