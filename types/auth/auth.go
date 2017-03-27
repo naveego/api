@@ -20,7 +20,7 @@ const (
 	UserStatusResetRequired       UserStatus = "RESETREQUIRED"
 )
 
-type UserAttributes map[string]string
+type UserAttributes map[string]interface{}
 
 type User struct {
 	ID            string         `json:"id" bson:"_id"`
