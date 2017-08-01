@@ -74,6 +74,10 @@ type Context struct {
 }
 
 type Subscriber interface {
+
+	// Init gives the subscriber an opportunity to get setup before use
+	Init(ctx Context, settings map[string]interface{}) error
+
 	// TestConnection tests the connection to the publisher
 	TestConnection(ctx Context, connSettings map[string]interface{}) (bool, string, error)
 
@@ -83,6 +87,9 @@ type Subscriber interface {
 	Shapes(ctx Context) (pipeline.ShapeDefinitions, error)
 
 	Receive(ctx Context, shape pipeline.ShapeDefinition, dataPoint pipeline.DataPoint) error
+
+	// Dispose gives the subscriber an opportunity to cleanup after use
+	Dispose(ctx Context) error
 }
 
 type Initer interface {

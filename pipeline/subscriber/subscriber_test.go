@@ -13,12 +13,24 @@ var (
 
 type testSubscriber struct{}
 
+func (t *testSubscriber) Init(ctx Context, settings map[string]interface{}) error {
+	return nil
+}
+
 func (t *testSubscriber) TestConnection(ctx Context, connSettings map[string]interface{}) (bool, string, error) {
 	return false, "", nil
 }
 
 func (t *testSubscriber) Shapes(ctx Context) (pipeline.ShapeDefinitions, error) {
 	return pipeline.ShapeDefinitions{}, nil
+}
+
+func (t *testSubscriber) Receive(ctx Context, shape pipeline.ShapeDefinition, dataPoint pipeline.DataPoint) error {
+	return nil
+}
+
+func (t *testSubscriber) Dispose(ctx Context) error {
+	return nil
 }
 
 func testSubscriberFactory() Subscriber {
