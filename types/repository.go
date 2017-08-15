@@ -4,6 +4,9 @@ import (
 	"strings"
 )
 
+// Tenant represents the core multi-tenancy boundary in Naveego (replaces Repository)
+type Tenant Repository
+
 // Repository represents the core multi-tenancy boundary in Naveego
 type Repository struct {
 	ID     string                 `json:"id" bson:"_id"` // The id of the repository
