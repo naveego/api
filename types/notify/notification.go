@@ -10,5 +10,7 @@ type Notification struct {
 	Topic          string    `json:"topic" bson:"topic"`
 	Subject        string    `json:"subject" bson:"subject"`
 	Message        string    `json:"message" bson:"message"`
+	HTMLMessage    string    `json:"html_message" bson:"html_message"`
 	Timestamp      time.Time `json:"timestamp" bson:"timestamp"`
+	Status         string    `json:"-" bson:"status"`
 }
