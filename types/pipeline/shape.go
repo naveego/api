@@ -200,10 +200,12 @@ func hashArray(properties []string) (uint32, error) {
 type ShapeDefinitions []ShapeDefinition
 
 type ShapeDefinition struct {
-	Name        string               `json:"name" bson:"name"`
-	Description string               `json:"description" bson:"description"`
-	Keys        []string             `json:"keys" bson:"keys"`
-	Properties  []PropertyDefinition `json:"properties" bson:"properties"`
+	ID          string               `json:"id" bson:"_id,omitempty"`    // The ID of the ShapeDefinition
+	Namespace   string               `json:"namespace,omitempty"`        // The namespace the shape definition belongs to
+	Name        string               `json:"name,omitempty" bson:"name"` // The name of the shape definition (unique within Namespoce.)
+	Description string               `json:"description,omitempty" bson:"description"`
+	Keys        []string             `json:"keys,omitempty" bson:"keys"`
+	Properties  []PropertyDefinition `json:"properties,omitempty" bson:"properties"`
 }
 
 type PropertyDefinition struct {
