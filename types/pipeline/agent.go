@@ -8,8 +8,8 @@ import (
 type Agent struct {
 	ID            string      `json:"id,omitempty" bson:"_id,omitempty"` // The ID of the Agent
 	Host          string      `json:"host,omitempty"`
-	SubscriberIDs []string    `json:"subscriber_i_ds,omitempty"` // The IDs of the subscribers this agent should run
-	PublisherIDs  []string    `json:"publisher_i_ds,omitempty"`  // The IDs of the subscribers this agent should run
+	SubscriberIDs []string    `json:"subscribers,omitempty"` // The IDs of the subscribers this agent should run
+	PublisherIDs  []string    `json:"publishers,omitempty"`  // The IDs of the subscribers this agent should run
 	Status        AgentStatus `json:"status,omitempty"`
 }
 
