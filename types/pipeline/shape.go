@@ -208,6 +208,15 @@ type ShapeDefinition struct {
 	Properties  []PropertyDefinition `json:"properties,omitempty" bson:"properties"`
 }
 
+// SortPropertyDefinitionsByName is an alias for []PropertyDefinition which implements sort.Interface using PropertyDefinition.Name.
+type SortPropertyDefinitionsByName []PropertyDefinition
+
+func (p SortPropertyDefinitionsByName) Len() int      { return len(p) }
+func (p SortPropertyDefinitionsByName) Swap(i, j int) { p[i], p[j] = p[j], p[i] }
+func (p SortPropertyDefinitionsByName) Less(i, j int) bool {
+	return strings.Compare(p[i].Name, p[j].Name) < 0
+}
+
 type PropertyDefinition struct {
 	Name        string `json:"name" bson:"name"`
 	Description string `json:"description" bson:"description"`
