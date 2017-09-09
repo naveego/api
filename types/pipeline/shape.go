@@ -48,6 +48,19 @@ func NewShape(keyNames, properties []string) (Shape, error) {
 
 }
 
+// EnsureHashes sets the hash values on the shape if they are unset.
+func EnsureHashes(shape *Shape) {
+
+	if shape.KeyNamesHash == 0 {
+		shape.KeyNamesHash, _ = hashArray(shape.KeyNames)
+	}
+
+	if shape.PropertyHash == 0 {
+		shape.PropertyHash, _ = hashArray(shape.Properties)
+	}
+
+}
+
 // Shaper determines the schema of a given data point.  It will read through all the properties
 // and return a Shape. This shape can be used to determine if the set of properties has changed
 // between data points.
