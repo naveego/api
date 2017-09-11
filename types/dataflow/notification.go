@@ -10,6 +10,7 @@ import (
 type Notification struct {
 	ID        string    `json:"id" bson:"_id"`
 	TenantID  string    `json:"-" bson:"tenant_id"`
+	Type      string    `json:"type" bson:"type"`
 	Filter    string    `json:"filter" bson:"filter"`
 	Topic     string    `json:"topic" bson:"topic"`
 	CreatedOn time.Time `json:"created_on" bson:"created_on"`
