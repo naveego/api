@@ -4,12 +4,13 @@ import "time"
 
 // SearchRequest represents a request to search the logs
 type SearchRequest struct {
-	Type  string    `json:"type"`
-	Start time.Time `json:"start"`
-	End   time.Time `json:"end"`
-	Query string    `json:"query"`
-	Size  int32     `json:"size"`
-	Aggs  bool      `json:"aggs"`
+	TenantID string    `json:"-"`
+	Type     string    `json:"type"`
+	Start    time.Time `json:"start"`
+	End      time.Time `json:"end"`
+	Query    string    `json:"query"`
+	Size     int32     `json:"size"`
+	Aggs     bool      `json:"aggs"`
 }
 
 // SearchResult represents the output of a search operation
