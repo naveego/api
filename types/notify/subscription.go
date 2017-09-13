@@ -7,7 +7,7 @@ import "time"
 // topics.
 type Subscription struct {
 	ID           string    `json:"id" bson:"_id"`
-	TenantID     string    `json:"-" bson:"tenant_id"`
+	TenantID     string    `json:"tenant_id" bson:"tenant_id"`
 	SubscriberID string    `json:"subscriber_id" bson:"subscriber_id"`
 	Topic        string    `json:"topic" bson:"topic"`
 	Label        string    `json:"label" bson:"label"`
