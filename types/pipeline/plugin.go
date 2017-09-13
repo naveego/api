@@ -34,6 +34,7 @@ type PluginVersion struct {
 	Description  string `json:"description,omitempty"`
 	Version      string `json:"version,omitempty"`
 	ConfigSchema string `json:"configSchema,omitempty"`
+	Command      string `json:"command"`             // the command that should be used to start the plugin.
 	URL          string `json:"url,omitempty"`       // the location the plugin can be downloaded from
 	Signature    string `json:"signature,omitempty"` // The SHA-1 hash of the plugin, used to verify download.
 }
