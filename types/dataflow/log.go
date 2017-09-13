@@ -7,9 +7,9 @@ import (
 )
 
 var (
-	ErrorEmptyArray     = errors.Error{4001000, "empty array not allowed"}
-	ErrorMissingTenant  = errors.Error{4001001, "missing tenant_id"}
-	ErrorMissingMessage = errors.Error{4001002, "missing message"}
+	ErrorEmptyArray     = errors.Error{Code: 4001000, Message: "empty array not allowed"}
+	ErrorMissingTenant  = errors.Error{Code: 4001001, Message: "missing tenant_id"}
+	ErrorMissingMessage = errors.Error{Code: 4001002, Message: "missing message"}
 )
 
 // Log represents a data flow log that contains important information
