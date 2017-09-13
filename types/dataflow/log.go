@@ -1,6 +1,16 @@
 package dataflow
 
-import "time"
+import (
+	"time"
+
+	"github.com/naveego/errors"
+)
+
+var (
+	ErrorEmptyArray     = errors.Error{4001000, "empty array not allowed"}
+	ErrorMissingTenant  = errors.Error{4001001, "missing tenant_id"}
+	ErrorMissingMessage = errors.Error{4001002, "missing message"}
+)
 
 // Log represents a data flow log that contains important information
 // about a data flow process.
@@ -66,4 +76,17 @@ type DataQuality struct {
 	ExceptionCount  int64  `json:"exception_count,omitempty"`
 	PopulationCount int64  `json:"population_count,omitempty"`
 	ExecutionMS     int64  `json:"execution_ms,omitempty"`
+}
+
+func (l *Log) Validate() error {
+
+	if l.TenantID == "" {
+		return ErrorMissingTenant
+	}
+
+	if l.Message == "" {
+		return ErrorMissingMessage
+	}
+
+	return nil
 }
