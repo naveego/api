@@ -2,6 +2,7 @@ package pipeline
 
 import (
 	"regexp"
+	"strings"
 
 	"github.com/naveego/errors"
 )
@@ -15,6 +16,11 @@ const (
 	// DataPointDelete represents a delete action
 	DataPointDelete DataPointAction = "delete"
 )
+
+func (d *DataPointAction) UnmarshalJSON(bytes []byte) error {
+	*d = DataPointAction(strings.ToLower(string(bytes)))
+	return nil
+}
 
 var (
 	validRepositoryRegex *regexp.Regexp
