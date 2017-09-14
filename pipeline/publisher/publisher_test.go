@@ -13,11 +13,24 @@ var (
 
 type testPublisher struct{}
 
-func (t *testPublisher) Shapes(ctx Context) (map[string]pipeline.Shape, error) {
+func (t *testPublisher) Init(ctx Context) error {
+	return nil
+}
+
+func (t *testPublisher) Dispose(ctx Context) error {
+	return nil
+}
+
+func (t *testPublisher) Shapes(ctx Context) (pipeline.ShapeDefinitions, error) {
 	return nil, nil
 }
 
-func (t *testPublisher) Publish(ctx Context, dataTransport DataTransport) {}
+func (t *testPublisher) Publish(ctx Context, sh pipeline.ShapeDefinition, dataTransport DataTransport) {
+}
+
+func (t *testPublisher) TestConnection(ctx Context) (bool, string, error) {
+	return true, "", nil
+}
 
 func testPublisherFactory() Publisher {
 	return expectedPublisher

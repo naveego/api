@@ -18,6 +18,8 @@ type DataTransport interface {
 	// destination.  If anything causes the data points to not
 	// reach their destination successfully an error is returned.
 	Send(dataPoints []pipeline.DataPoint) error
+
+	Done() error
 }
 
 type defaultTransport struct {
@@ -73,4 +75,8 @@ func (dt *defaultTransport) Send(dataPoints []pipeline.DataPoint) error {
 
 	return nil
 
+}
+
+func (dt *defaultTransport) Done() error {
+	return nil
 }

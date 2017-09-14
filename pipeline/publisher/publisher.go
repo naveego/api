@@ -68,9 +68,12 @@ type Factory func() Publisher
 
 // Publisher provides the core API for publishing data to the pipeline.
 type Publisher interface {
+	Init(ctx Context) error
+
+	Dispose(ctx Context) error
 
 	// TestConnection tests the connection to the publisher
-	TestConnection(ctx Context, connSettings map[string]interface{}) (bool, string, error)
+	TestConnection(ctx Context) (bool, string, error)
 
 	// Shapes returns the shapes that a publisher can send to the pipeline.
 	// Shapes are a core component of the Pipline and represent self describing
@@ -84,15 +87,15 @@ type Publisher interface {
 }
 
 type Context struct {
-	PublisherInstance pipeline.PublisherInstance // Reference to the publisher data from the expectedPublisher
-	APIToken          string                     // The API token to use for authentication
-	Logger            *logrus.Entry
+	Settings map[string]interface{}
+	APIToken string // The API token to use for authentication
+	Logger   *logrus.Entry
 }
 
 // GetStringSetting is a helper function that will read a setting
 // as a string, and let the caller know if it was valid or not.
 func (c *Context) GetStringSetting(path string) (string, bool) {
-	rawValue, ok := c.PublisherInstance.Settings[path]
+	rawValue, ok := c.Settings[path]
 	if !ok {
 		return "", false
 	}
@@ -109,7 +112,6 @@ func (c *Context) NewDataPoint(entity string, keyNames []string, data map[string
 	return pipeline.DataPoint{
 		Repository: "",
 		Entity:     entity,
-		Source:     c.PublisherInstance.SourceName,
 		Action:     "upsert",
 		KeyNames:   keyNames,
 		Data:       data,
