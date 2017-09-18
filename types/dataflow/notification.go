@@ -11,7 +11,6 @@ type Notification struct {
 	ID        string    `json:"id" bson:"_id"`
 	TenantID  string    `json:"tenant_id" bson:"tenant_id"`
 	UserID    string    `json:"user_id,omitempty" bson:"user_id"`
-	Label     string    `json:"label" bson:"label"`
 	Type      string    `json:"type" bson:"type"`
 	Filter    string    `json:"filter" bson:"filter"`
 	Topic     string    `json:"topic" bson:"topic"`
@@ -24,10 +23,6 @@ func (n *Notification) Validate() error {
 
 	if n.TenantID == "" {
 		return errors.NewWithCode(4000001, "missing tenant_id")
-	}
-
-	if n.Label == "" {
-		return errors.NewWithCode(4000002, "missing label")
 	}
 
 	if n.Filter == "" {
