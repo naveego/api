@@ -18,7 +18,7 @@ const (
 )
 
 func (d *DataPointAction) UnmarshalJSON(bytes []byte) error {
-	*d = DataPointAction(strings.ToLower(string(bytes)))
+	*d = DataPointAction(strings.ToLower(strings.Trim(string(bytes), "\"")))
 	return nil
 }
 
