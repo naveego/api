@@ -11,7 +11,7 @@ type PublisherInstance struct {
 	Schedule      string                 `json:"schedule,omitempty" bson:"schedule,omitempty"`       // The Schedule to run the publish
 	LiveEndpoint  string                 `json:"live_endpoint" bson:"live_endpoint"`                 // The URL for connecting to Naveego Live
 	LogEndpoint   string                 `json:"log_endpoint" bson:"log_endpoint"`
-	Shapes        ShapeDefinitions       `json:"shapes" bson:"shapes"`     // The Shapes publsihed by this Publisher
+	Shapes        []string               `json:"shapes" bson:"shapes"`     // The Shapes publsihed by this Publisher
 	Settings      map[string]interface{} `json:"settings" bson:"settings"` // The settings of the Publisher
 	PluginVersion string                 `json:"pluginVersion"`            // The identifier for the plugin used to run this subscriber.
 }
