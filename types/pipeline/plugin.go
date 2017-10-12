@@ -28,6 +28,7 @@ type Plugin struct {
 	ID          string          `json:"id,omitempty" bson:"_id,omitempty"` // The ID of the plugin
 	Description string          `json:"description,omitempty"`
 	Versions    []PluginVersion `json:"versions,omitempty"`
+	IconURL     string          `json:"iconURL,omitempty"`
 }
 
 type PluginVersion struct {
