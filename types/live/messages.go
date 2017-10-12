@@ -19,7 +19,7 @@ type RPCRequest struct {
 type RPCResponse struct {
 	ID     string          `json:"id,omitempty"`
 	Result json.RawMessage `json:"result,omitempty"`
-	Error  RPCError        `json:"error,omitempty"`
+	Error  *RPCError       `json:"error,omitempty"`
 }
 
 // RPCError is a struct representing a JSON-RPC over socket.io error.
