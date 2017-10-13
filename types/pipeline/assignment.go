@@ -17,8 +17,14 @@ const (
 	// ASRunning means the assigned segment is running on the agent.
 	ASRunning AssignmentStatus = "running"
 
+	// ASRecycling means the segment is being restarted.
+	ASRecycling AssignmentStatus = "recycling"
+
 	// ASPendingDelete means the segment has been scheduled for delete but the agent has not yet stopped it.
 	ASPendingDelete AssignmentStatus = "pending-delete"
+
+	// ASPendingDelete means the segment has been scheduled for delete but the agent has not yet stopped it.
+	ASDeleted AssignmentStatus = "deleted"
 
 	// ASError means the agent running the segment has reported that the segment has an error.
 	ASError AssignmentStatus = "error"

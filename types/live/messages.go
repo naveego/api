@@ -3,12 +3,6 @@ package live
 import "encoding/json"
 
 // RPCRequest is the struct representing a JSON-RPC over socket.io request.
-type RPCNotification struct {
-	Params []json.RawMessage `json:"params,omitempty"`
-	Method string            `json:"method,omitempty"`
-}
-
-// RPCRequest is the struct representing a JSON-RPC over socket.io request.
 type RPCRequest struct {
 	ID     string            `json:"id,omitempty"`
 	Params []json.RawMessage `json:"params,omitempty"`
