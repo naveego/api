@@ -7,7 +7,7 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/Sirupsen/logrus"
+	"github.com/sirupsen/logrus"
 )
 
 // Package represents a buildable publisher or subscriber.
@@ -135,7 +135,7 @@ var harnessTemplate = `package main
 
 import (
 	"os"
-	"github.com/Sirupsen/logrus"
+	"github.com/sirupsen/logrus"
 	cmd "@commandPath"
 	_ "@importPath"
 )

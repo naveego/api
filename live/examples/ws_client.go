@@ -8,7 +8,7 @@ import (
 	"os/signal"
 
 	"github.com/naveego/api/live-api"
-	"github.com/Sirupsen/logrus"
+	"github.com/sirupsen/logrus"
 )
 
 const (

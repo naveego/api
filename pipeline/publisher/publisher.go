@@ -4,7 +4,7 @@ import (
 	"sort"
 	"sync"
 
-	"github.com/Sirupsen/logrus"
+	"github.com/sirupsen/logrus"
 	pipeerrors "github.com/naveego/api/pipeline/errors"
 	"github.com/naveego/api/types/pipeline"
 	"github.com/naveego/errors"

@@ -5,7 +5,7 @@ import (
 	"os"
 	"strings"
 
-	"github.com/Sirupsen/logrus"
+	"github.com/sirupsen/logrus"
 	"github.com/naveego/api/client"
 	"github.com/naveego/api/pipeline/cli/logging"
 	"github.com/naveego/api/types/pipeline"
