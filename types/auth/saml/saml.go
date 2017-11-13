@@ -6,7 +6,7 @@ type SAMLSettings struct {
 	ID                          string `json:"id" bson:"_id"`
 	IDPSSOURL                   string `json:"idp_sso_url" bson:"idpssourl"`
 	IDPSSODescriptorURL         string `json:"idp_sso_decriptor_url" bson:"idpssodescriptorurl"`
-	IDPCertFingerprint          string `json:"idp_cert_fingerprint"`
+	IDPPublicCertPath           string `json:"idp_public_cert_path"`
 	AssertionConsumerServiceURL string `json:"assertion_consumer_service_url" bson:"assertionconsumerserviceurl"`
 }
 
@@ -179,6 +179,8 @@ type Response struct {
 	Signature Signature `xml:"Signature"`
 	Issuer    Issuer    `xml:"Issuer"`
 	Status    Status    `xml:"Status"`
+
+	RawXML string `xml:"-"`
 }
 
 type Assertion struct {

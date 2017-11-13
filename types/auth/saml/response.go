@@ -4,7 +4,15 @@ import (
 	"encoding/base64"
 	"encoding/xml"
 	"errors"
+	"io/ioutil"
+	"os"
+	"os/exec"
 	"time"
+)
+
+const (
+	xmlResponseID = "urn:oasis:names:tc:SAML:2.0:protocol:Response"
+	xmlRequestID  = "urn:oasis:names:tc:SAML:2.0:protocol:AuthnRequest"
 )
 
 func ParseEncodedResponse(b64ResponseXML string) (*Response, error) {
@@ -17,6 +25,8 @@ func ParseEncodedResponse(b64ResponseXML string) (*Response, error) {
 	if err != nil {
 		return nil, err
 	}
+
+	response.RawXML = string(bytesXML)
 
 	return &response, nil
 }
@@ -57,6 +67,32 @@ func (s *SAMLSettings) ValidateResponse(r *Response) error {
 	}
 	if notOnOrAfter.Before(time.Now()) {
 		return errors.New("assertion has expired on: " + expires)
+	}
+
+	ve := verifyResponse(r.RawXML, s.IDPPublicCertPath)
+	if ve != nil {
+		return ve
+	}
+
+	return nil
+}
+
+func verifyResponse(xml string, publicCertPath string) error {
+	samlTemp, err := ioutil.TempFile(os.TempDir(), "tmpvw")
+	if err != nil {
+		return err
+	}
+
+	samlTemp.WriteString(xml)
+	samlTemp.Close()
+	defer func() {
+		_ = os.Remove(samlTemp.Name())
+	}()
+
+	_, err = exec.Command("xmlsec1", "--verify", "--pubkey-cert-pem", publicCertPath, "--id-attr:ID", xmlResponseID, samlTemp.Name()).CombinedOutput()
+	if err != nil {
+		//fmt.Print(string(o))
+		return errors.New("error verifing signature: " + err.Error())
 	}
 
 	return nil
