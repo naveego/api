@@ -22,6 +22,7 @@ type Pipeline struct {
 	Name            string         `json:"name"`                    // The Name of the pipeline
 	Description     string         `json:"description,omitempty"`   // The description of the piepline
 	Status          PipelineStatus `json:"status"`                  // The Status of the pipeline
+	Schedule        string         `json:"schedule"`
 	PublisherID     string         `json:"publisher" bson:"publisher"`
 	PublisherType   string         `json:"publisher_type" bson:"publisher_type"`
 	SubscriberID    string         `json:"subscriber" bson:"subscriber"`
