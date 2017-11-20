@@ -1,0 +1,14 @@
+{
+    "endpoints": {
+        "live": "http://localhost:9002",
+        "auth": "http://localhost:3000",
+        "pipeline": "http://localhost:8088",
+        "dataflow": "http://localhost:3001",
+        "graylog": {
+            "http": "http://graylog.n5o.green/gelf"
+        }
+    },
+    "logging": {
+        "level": "debug"
+    }
+}
