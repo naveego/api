@@ -1,6 +1,9 @@
 package saml
 
 import (
+	"fmt"
+	"io/ioutil"
+	"os"
 	"testing"
 	"time"
 
@@ -14,7 +17,6 @@ var testSPSettings = SAMLSettings{
 	ID:                          "adventureworks",
 	IDPSSOURL:                   "https://win-h8pjt60d0h.adfs-test.local/adfs/ls",
 	IDPSSODescriptorURL:         "https://localhost:8088",
-	IDPCertFingerprint:          "21E2AC758E8144C9BABF87F682EABD17A187F76A",
 	AssertionConsumerServiceURL: "https://localhost:8088/adventureworks/saml/access",
 }
 
@@ -30,12 +32,21 @@ func init() {
 	// We need to fudge the expiration date in order for the tests to pass
 	testResponse.Assertion.Subject.SubjectConfirmation.SubjectConfirmationData.NotOnOrAfter = expDate
 
+	crtTmp, _ := ioutil.TempFile(os.TempDir(), "samltest")
+	crtTmp.WriteString(idpPubCert)
+	defer func() {
+		//_ = os.Remove(crtTmp.Name())
+	}()
+
+	testSPSettings.IDPPublicCertPath = crtTmp.Name()
+
 }
 
 func TestValidateResponse(t *testing.T) {
 
 	Convey("Given a valid response", t, func() {
 		Convey("it should return nil", func() {
+			fmt.Printf(testSPSettings.IDPPublicCertPath)
 			e := testSPSettings.ValidateResponse(testResponse)
 			So(e, ShouldBeNil)
 		})
@@ -143,7 +154,6 @@ func TestValidateResponse(t *testing.T) {
 	})
 
 	Convey("Given a response that has expired", t, func() {
-
 		oldDate := time.Now().Add(time.Hour * -24).UTC().Format(time.RFC3339)
 		testResponse.Assertion.Subject.SubjectConfirmation.SubjectConfirmationData.NotOnOrAfter = oldDate
 
@@ -161,9 +171,7 @@ func TestValidateResponse(t *testing.T) {
 
 }
 
-var idpSHAPrint = "21E2AC758E8144C9BABF87F682EABD17A187F76A"
-
-var samlResponse = `
+const samlResponse = `
 PHNhbWxwOlJlc3BvbnNlIElEPSJfZDBkZDZmYzctYzI3Yy00MDNiLWJjODItNDgzZWExYjA4NjNhIiB
 WZXJzaW9uPSIyLjAiIElzc3VlSW5zdGFudD0iMjAxNy0wMi0xNlQwMDoyODoyNC4yOTlaIiBEZXN0aW
 5hdGlvbj0iaHR0cHM6Ly9sb2NhbGhvc3Q6ODA4OC9hZHZlbnR1cmV3b3Jrcy9zYW1sL2FjY2VzcyIgQ
@@ -234,3 +242,22 @@ jZjFhYjRjZDAxMSI+PEF1dGhuQ29udGV4dD48QXV0aG5Db250ZXh0Q2xhc3NSZWY+dXJuOm9hc2lzOm
 GhuQ29udGV4dENsYXNzUmVmPjwvQXV0aG5Db250ZXh0PjwvQXV0aG5TdGF0ZW1lbnQ+PC9Bc3NlcnRp
 b24+PC9zYW1scDpSZXNwb25zZT4=
 `
+
+const idpPubCert = `-----BEGIN CERTIFICATE-----
+MIIC+jCCAeKgAwIBAgIQFfHkPbmoUJ9D6IDzxWr1AjANBgkqhkiG9w0BAQsFADA5
+MTcwNQYDVQQDEy5BREZTIFNpZ25pbmcgLSBXSU4tSDhQSlQ2UzBEMEguYWRmcy10
+ZXN0LmxvY2FsMB4XDTE2MTIwMjAwNDIyMVoXDTE3MTIwMjAwNDIyMVowOTE3MDUG
+A1UEAxMuQURGUyBTaWduaW5nIC0gV0lOLUg4UEpUNlMwRDBILmFkZnMtdGVzdC5s
+b2NhbDCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBALcTExvSxAAdb4+x
+0dG8BGO/6Q6aqRDvAAuj2cDEt1qaryPVMPl7BvHOKvPUOHRMOBCzQwcWH8B9NgiZ
+9dDcyVZgrdjAxCYAotN7e+City6/8def7dxZiQZBGc8yoe4HoyymYUM0nZH9Tifl
+cJijubpvuevJXFk8yk397wmptWWOJi/Y7ymCHra+itG831ANsGP6Gsn2Vl13tV2O
+F0lRPwMHGOTA9M265Ix6GEHalEO/apH9kgXhkSG8Q52J1sIE8IDz0cr43Vs/mL4Q
+B5VjkWT6t8V4edN9PIW4ZVDJgS56d2qkGjwQUxne9FIrDhWRETNlOOuvfOfulQ7b
+63gPrD0CAwEAATANBgkqhkiG9w0BAQsFAAOCAQEAkDemSCqjLDj2K3oTN61C6BXD
+6fo8TWF4irDIBFiGypEV6lmN557jUtCn9pCCKhGq68o8gvB3OcK1OAByfbPlSh+R
+lzDpOe5TtAwaDh3fsY84flnoemU/vhB23M4i27Rxr6Xnu1mJ1Ph08Iw1I4OPKFSY
+q+cyvsNeUtausNuoVbjXJILsxlv7FfM/FFDL2YzgRJPfQNfpist+hR6/aj3U5pf3
+bPmMF4zfDZ+cOQ5YHFPsNN4xkpN/BSsDK03YvL4lMkkJ3n2CJohXNmV22ti6J383
+R80BZslJ1r1o6Ck9twKbEp0HfjLcjzbW1KrtDSp9qyW5FL79XKcM9PBHQSs7vw==
+-----END CERTIFICATE-----`
