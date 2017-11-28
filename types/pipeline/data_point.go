@@ -45,7 +45,7 @@ var (
 func init() {
 	// Get the name regex ready to go
 	validRepositoryRegex = regexp.MustCompile("^[a-zA-Z0-9_]{3,15}$")
-	validEntityRegex = regexp.MustCompile("^[a-zA-Z0-9_]{3,30}$")
+	validEntityRegex = regexp.MustCompile("^[a-zA-Z0-9_.]{3,250}$")
 }
 
 // DataPoint represents a pipeline dataPoint that can flow through the
