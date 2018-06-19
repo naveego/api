@@ -2,7 +2,7 @@ package utils
 
 import "github.com/satori/go.uuid"
 
-func NewGUID() uuid.UUID {
+func NewGUID() (uuid.UUID, error) {
 	return uuid.NewV4()
 }
 
