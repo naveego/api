@@ -7,8 +7,8 @@ import (
 	"os"
 	"os/signal"
 
-	"github.com/naveego/api/live-api"
-	"github.com/Sirupsen/logrus"
+	"github.com/naveego/api/live"
+	"github.com/sirupsen/logrus"
 )
 
 const (
@@ -18,7 +18,7 @@ const (
 func main() {
 
 	logrus.SetLevel(logrus.DebugLevel)
-	
+
 	cli, err := live.NewWebSocketClient(SERVER_ADDR, "23432", "TEST")
 	if err != nil {
 		panic(err)
@@ -42,4 +42,3 @@ func main() {
 	fmt.Println("Exiting")
 
 }
-

@@ -6,8 +6,8 @@ import (
 	"fmt"
 	"net/http"
 
-	"github.com/Sirupsen/logrus"
 	"github.com/naveego/api/types/pipeline"
+	"github.com/sirupsen/logrus"
 )
 
 // DataTransport defines an API for sending pipeline data points

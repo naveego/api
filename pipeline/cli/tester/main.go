@@ -3,10 +3,10 @@ package main
 import (
 	"os"
 
-	"github.com/Sirupsen/logrus"
 	cmd "github.com/naveego/api/pipeline/cli/pub"
 	_ "github.com/naveego/pipeline-publishers"
 	_ "github.com/naveego/pipeline-subscribers"
+	"github.com/sirupsen/logrus"
 )
 
 func main() {

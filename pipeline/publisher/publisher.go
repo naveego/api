@@ -4,10 +4,10 @@ import (
 	"sort"
 	"sync"
 
-	"github.com/Sirupsen/logrus"
 	pipeerrors "github.com/naveego/api/pipeline/errors"
 	"github.com/naveego/api/types/pipeline"
 	"github.com/naveego/errors"
+	"github.com/sirupsen/logrus"
 )
 
 var (

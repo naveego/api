@@ -5,8 +5,8 @@ import (
 	"time"
 
 	"github.com/Shopify/sarama"
-	"github.com/Sirupsen/logrus"
 	"github.com/naveego/api/types/pipeline"
+	"github.com/sirupsen/logrus"
 	"github.com/wvanbergen/kafka/consumergroup"
 	"github.com/wvanbergen/kazoo-go"
 )

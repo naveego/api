@@ -5,11 +5,11 @@ import (
 	"os/signal"
 	"time"
 
-	"github.com/Sirupsen/logrus"
 	"github.com/naveego/api/live"
 	"github.com/naveego/api/pipeline/publisher"
 	"github.com/naveego/api/types/queue"
 	"github.com/robfig/cron"
+	"github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 )
 

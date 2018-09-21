@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/Sirupsen/logrus"
 	"github.com/naveego/api/client"
+	"github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 )
 

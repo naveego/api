@@ -9,7 +9,7 @@ import (
 	"syscall"
 
 	"github.com/naveego/api/live"
-	"github.com/Sirupsen/logrus"
+	"github.com/sirupsen/logrus"
 )
 
 const (

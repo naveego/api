@@ -1,9 +1,9 @@
 package sub
 
 import (
-	"github.com/Sirupsen/logrus"
 	"github.com/naveego/api/pipeline/subscriber"
 	"github.com/naveego/api/types/pipeline"
+	"github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 )
 
