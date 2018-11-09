@@ -8,7 +8,7 @@ import (
 	"net/url"
 	"time"
 
-	"github.com/nu7hatch/gouuid"
+	uuid "github.com/satori/go.uuid"
 )
 
 func (sp *SAMLSettings) GetAuthnRequest() *AuthnRequest {
@@ -68,13 +68,13 @@ func NewAuthnRequest() *AuthnRequest {
 				Local: "samlp:RequestedAuthnContext",
 			},
 			SAMLP:      "urn:oasis:names:tc:SAML:2.0:protocol",
-			Comparison: "exact",
+			Comparison: "minimum",
 			AuthnContextClassRef: AuthnContextClassRef{
 				XMLName: xml.Name{
 					Local: "saml:AuthnContextClassRef",
 				},
 				SAML:      "urn:oasis:names:tc:SAML:2.0:assertion",
-				Transport: "urn:oasis:names:tc:SAML:2.0:ac:classes:PasswordProtectedTransport",
+				Transport: "urn:oasis:names:tc:SAML:2.0:ac:classes:unspecified",
 			},
 		},
 	}
